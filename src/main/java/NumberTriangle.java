@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -109,20 +110,44 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-
-        // TODO define any variables that you want to use to store things
+        ArrayList<NumberTriangle> prevList =  new ArrayList<>();
+        ArrayList<NumberTriangle> currList =  new ArrayList<>();
 
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
         NumberTriangle top = null;
 
         String line = br.readLine();
+
         while (line != null) {
 
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
+            String[] linesplit = line.split(" ");
+            if (linesplit.length == 1) {
+                top = new NumberTriangle(Integer.parseInt(linesplit[0]));
+                prevList.add(top);
+            }
+            else if (linesplit.length == 2) {
+                top.setLeft(new NumberTriangle(Integer.parseInt(linesplit[0])));
+                top.setRight(new NumberTriangle(Integer.parseInt(linesplit[1])));
+                prevList.remove(top);
+                prevList.add(top.left);
+                prevList.add(top.right);
 
-            // TODO process the line
+            }
+
+            else {
+                for (int i = 1; i < linesplit.length; i++) {
+                    prevList.get(i - 1).setLeft(new NumberTriangle(Integer.parseInt(linesplit[i - 1])));
+                    prevList.get(i - 1).setRight(new NumberTriangle(Integer.parseInt(linesplit[i])));
+                }
+                currList.add(prevList.get(0).left);
+                currList.add(prevList.get(0).right);
+                for (int i = 1; i < prevList.size(); i++) {
+                    currList.add(prevList.get(i).right);
+                }
+                prevList = currList;
+                currList = new ArrayList<>();
+            }
 
             //read the next line
             line = br.readLine();
