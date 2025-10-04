@@ -125,7 +125,6 @@ public class NumberTriangle {
             if (linesplit.length == 1) {
                 top = new NumberTriangle(Integer.parseInt(linesplit[0]));
                 prevList.add(top);
-                count++;
             }
             else if (linesplit.length == 2) {
                 top.setLeft(new NumberTriangle(Integer.parseInt(linesplit[0])));
@@ -133,7 +132,7 @@ public class NumberTriangle {
                 prevList.remove(top);
                 prevList.add(top.left);
                 prevList.add(top.right);
-                count++;
+
             }
 
             else {
